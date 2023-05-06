@@ -16,7 +16,7 @@ public class GerenciadorDominio {
     
     public GerenciadorDominio() throws ClassNotFoundException, SQLException {
         // TESTE
-        ConexaoHibernate.getSessionFactory();
+//        ConexaoHibernate.getSessionFactory();
         
     }
     

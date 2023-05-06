@@ -5,6 +5,9 @@
 package interfaces;
 
 import gerTarefas.GerenciadorInterface;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -289,18 +292,36 @@ public class Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoCadastrarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoCadastrarProdutoActionPerformed
-        GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-        gerenciador.cadastroProduto();
+        try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.cadastroProduto();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_botaoCadastrarProdutoActionPerformed
 
     private void BotaoCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCadastrarUsuarioActionPerformed
-        GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-        gerenciador.cadastroUsuario();
+        try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.cadastroUsuario();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BotaoCadastrarUsuarioActionPerformed
 
     private void BotaoCadastrarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotaoCadastrarVendaActionPerformed
-        GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-        gerenciador.cadastroVenda();
+        try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.cadastroVenda();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BotaoCadastrarVendaActionPerformed
 
     /**
