@@ -4,53 +4,41 @@
  */
 package dominio;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
  * @author geandersonlemonte
  */
-public class Usuario {
+@Entity
+public class Usuario implements Serializable {
+
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
-    private int idUsuario;   
-    
-    @Column (name="nomeUsuario", length = 250, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int idUsuario;
+
+    @Column(name = "nomeUsuario", length = 250, nullable = false)
     private String nomeUsuario;
 
-    @Column (name="administrador",nullable = false)
+    @Column(name = "administrador", nullable = false)
     private boolean administrador;
 
-    @Override
-    public String toString() {
-        return "Usuario{" + "nomeUsuario=" + nomeUsuario + '}';
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Venda> vendas = new ArrayList();
+
+    public Usuario() {
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Usuario other = (Usuario) obj;
-        return this.idUsuario == other.idUsuario;
-    }
-
-    
     public Usuario(int idUsuario, String nomeUsuario, boolean administrador) {
         this.idUsuario = idUsuario;
         this.nomeUsuario = nomeUsuario;
@@ -80,7 +68,31 @@ public class Usuario {
     public void setAdministrador(boolean administrador) {
         this.administrador = administrador;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "nomeUsuario=" + nomeUsuario + '}';
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Usuario other = (Usuario) obj;
+        return this.idUsuario == other.idUsuario;
+    }
+
 }
