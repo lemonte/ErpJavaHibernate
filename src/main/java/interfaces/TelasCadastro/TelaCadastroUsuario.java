@@ -4,6 +4,12 @@
  */
 package interfaces.TelasCadastro;
 
+import dominio.Produto;
+import dominio.Usuario;
+import gerTarefas.GerenciadorInterface;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author geandersonlemonte
@@ -29,9 +35,9 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        nome = new javax.swing.JTextField();
+        salvar = new javax.swing.JButton();
+        administrador = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -39,14 +45,14 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
 
         jLabel1.setText("Nome:");
 
-        jButton1.setText("Salvar");
-
-        jCheckBox1.setText("Administrador");
-        jCheckBox1.addActionListener(new java.awt.event.ActionListener() {
+        salvar.setText("Salvar");
+        salvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox1ActionPerformed(evt);
+                salvarActionPerformed(evt);
             }
         });
+
+        administrador.setText("Administrador");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -58,13 +64,13 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(103, 103, 103)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jCheckBox1)))
+                        .addComponent(administrador)))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -73,11 +79,11 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jCheckBox1)
+                .addComponent(administrador)
                 .addGap(34, 34, 34)
-                .addComponent(jButton1)
+                .addComponent(salvar)
                 .addContainerGap(67, Short.MAX_VALUE))
         );
 
@@ -98,21 +104,29 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel1.getAccessibleContext().setAccessibleName("Cadastro Usuário");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jCheckBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox1ActionPerformed
+    private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
+         try{
+          GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+          Usuario usuario = new Usuario();
+          usuario.setAdministrador(administrador.isSelected());
+          usuario.setNomeUsuario(nome.getText());
+          gerenciador.inserirUsuario(usuario);
+          this.setVisible(false);
+          this.dispose();
+      }catch(ClassNotFoundException | NumberFormatException | SQLException e){
+          JOptionPane.showMessageDialog(this, e);
+      }
+    }//GEN-LAST:event_salvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JCheckBox administrador;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField nome;
+    private javax.swing.JButton salvar;
     // End of variables declaration//GEN-END:variables
 }

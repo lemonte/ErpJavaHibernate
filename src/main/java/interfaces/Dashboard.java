@@ -4,10 +4,14 @@
  */
 package interfaces;
 
+import dominio.Produto;
+import dominio.Usuario;
+import dominio.Venda;
 import gerTarefas.GerenciadorInterface;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -20,7 +24,18 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() {
         initComponents();
+//        init();
+
     }
+
+//    private void init() {
+//        try {
+//            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+//            gerenciador.carregarComboBox(tabelaProdutos, new Produto());
+//        } catch (ClassNotFoundException | NumberFormatException | SQLException e) {
+//            JOptionPane.showMessageDialog(this, e);
+//        }
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,28 +46,40 @@ public class Dashboard extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        tab = new javax.swing.JTabbedPane();
         TabProdutos = new javax.swing.JPanel();
         PanelProdutos = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabelaProdutos = new javax.swing.JTable();
         botaoCadastrarProduto = new javax.swing.JButton();
         TabUsuarios = new javax.swing.JPanel();
         PanelUsuários = new javax.swing.JPanel();
         BotaoCadastrarUsuario = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tabelaUsuarios = new javax.swing.JTable();
         TabVendas = new javax.swing.JPanel();
         PanelVendas = new javax.swing.JPanel();
         BotaoCadastrarVenda = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tabelaVendas = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        tab.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                tabComponentShown(evt);
+            }
+        });
+
+        TabProdutos.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                TabProdutosComponentShown(evt);
+            }
+        });
+
         PanelProdutos.setBorder(javax.swing.BorderFactory.createTitledBorder("Produtos Cadastrados"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -75,13 +102,13 @@ public class Dashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
+        jScrollPane1.setViewportView(tabelaProdutos);
+        if (tabelaProdutos.getColumnModel().getColumnCount() > 0) {
+            tabelaProdutos.getColumnModel().getColumn(0).setResizable(false);
+            tabelaProdutos.getColumnModel().getColumn(1).setResizable(false);
+            tabelaProdutos.getColumnModel().getColumn(2).setResizable(false);
+            tabelaProdutos.getColumnModel().getColumn(3).setResizable(false);
+            tabelaProdutos.getColumnModel().getColumn(4).setResizable(false);
         }
 
         botaoCadastrarProduto.setText("Cadastrar Produto");
@@ -130,9 +157,20 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Produtos", TabProdutos);
+        tab.addTab("Produtos", TabProdutos);
+
+        TabUsuarios.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                TabUsuariosComponentShown(evt);
+            }
+        });
 
         PanelUsuários.setBorder(javax.swing.BorderFactory.createTitledBorder("Usuários Cadastrados"));
+        PanelUsuários.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                PanelUsuáriosComponentShown(evt);
+            }
+        });
 
         BotaoCadastrarUsuario.setText("Cadastrar Usuário");
         BotaoCadastrarUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -141,7 +179,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -149,7 +187,7 @@ public class Dashboard extends javax.swing.JFrame {
                 "ID", "Nome", "Administrador"
             }
         ));
-        jScrollPane4.setViewportView(jTable4);
+        jScrollPane4.setViewportView(tabelaUsuarios);
 
         javax.swing.GroupLayout PanelUsuáriosLayout = new javax.swing.GroupLayout(PanelUsuários);
         PanelUsuários.setLayout(PanelUsuáriosLayout);
@@ -187,7 +225,13 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Usuários", TabUsuarios);
+        tab.addTab("Usuários", TabUsuarios);
+
+        TabVendas.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                TabVendasComponentShown(evt);
+            }
+        });
 
         PanelVendas.setBorder(javax.swing.BorderFactory.createTitledBorder("Vendas Realizadas"));
 
@@ -198,7 +242,7 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaVendas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -221,13 +265,22 @@ public class Dashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable3);
-        if (jTable3.getColumnModel().getColumnCount() > 0) {
-            jTable3.getColumnModel().getColumn(0).setResizable(false);
-            jTable3.getColumnModel().getColumn(1).setResizable(false);
-            jTable3.getColumnModel().getColumn(2).setResizable(false);
-            jTable3.getColumnModel().getColumn(3).setResizable(false);
-            jTable3.getColumnModel().getColumn(4).setResizable(false);
+        tabelaVendas.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                tabelaVendasAncestorRemoved(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tabelaVendas);
+        if (tabelaVendas.getColumnModel().getColumnCount() > 0) {
+            tabelaVendas.getColumnModel().getColumn(0).setResizable(false);
+            tabelaVendas.getColumnModel().getColumn(1).setResizable(false);
+            tabelaVendas.getColumnModel().getColumn(2).setResizable(false);
+            tabelaVendas.getColumnModel().getColumn(3).setResizable(false);
+            tabelaVendas.getColumnModel().getColumn(4).setResizable(false);
         }
 
         javax.swing.GroupLayout PanelVendasLayout = new javax.swing.GroupLayout(PanelVendas);
@@ -269,7 +322,7 @@ public class Dashboard extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Vendas", TabVendas);
+        tab.addTab("Vendas", TabVendas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -277,14 +330,14 @@ public class Dashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(tab)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(tab)
                 .addContainerGap())
         );
 
@@ -295,6 +348,7 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
             gerenciador.cadastroProduto();
+            atualizarTabelaProdutos();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -306,6 +360,7 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
             gerenciador.cadastroUsuario();
+            atualizarTabelaUsuarios();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -317,12 +372,69 @@ public class Dashboard extends javax.swing.JFrame {
         try {
             GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
             gerenciador.cadastroVenda();
+            atualizarTabelaVendas();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BotaoCadastrarVendaActionPerformed
+
+    private void TabProdutosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TabProdutosComponentShown
+    atualizarTabelaProdutos();
+    }//GEN-LAST:event_TabProdutosComponentShown
+
+    private void PanelUsuáriosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_PanelUsuáriosComponentShown
+      atualizarTabelaUsuarios();
+    }//GEN-LAST:event_PanelUsuáriosComponentShown
+
+    private void TabVendasComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TabVendasComponentShown
+      atualizarTabelaVendas();
+    }//GEN-LAST:event_TabVendasComponentShown
+
+    private void atualizarTabelaProdutos(){
+     try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.carregarTabela(tabelaProdutos, new Produto());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+        private void atualizarTabelaUsuarios(){
+             try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.carregarTabela(tabelaUsuarios, new Usuario());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+    
+    private void atualizarTabelaVendas(){
+         try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.carregarTabela(tabelaVendas, new Venda());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private void tabelaVendasAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tabelaVendasAncestorRemoved
+ 
+    }//GEN-LAST:event_tabelaVendasAncestorRemoved
+
+    private void tabComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tabComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabComponentShown
+
+    private void TabUsuariosComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_TabUsuariosComponentShown
+        atualizarTabelaUsuarios();
+    }//GEN-LAST:event_TabUsuariosComponentShown
 
     /**
      * @param args the command line arguments
@@ -340,9 +452,9 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
+    private javax.swing.JTabbedPane tab;
+    private javax.swing.JTable tabelaProdutos;
+    private javax.swing.JTable tabelaUsuarios;
+    private javax.swing.JTable tabelaVendas;
     // End of variables declaration//GEN-END:variables
 }
