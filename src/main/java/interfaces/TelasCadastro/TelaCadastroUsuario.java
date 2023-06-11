@@ -15,13 +15,19 @@ import javax.swing.JOptionPane;
  * @author geandersonlemonte
  */
 public class TelaCadastroUsuario extends javax.swing.JDialog {
-
+    private final Usuario usuario;
     /**
      * Creates new form TelaCadastroProduto
+     * @param parent
+     * @param modal
+     * @param usuario
      */
-    public TelaCadastroUsuario(java.awt.Frame parent, boolean modal) {
+    public TelaCadastroUsuario(java.awt.Frame parent, boolean modal, Usuario usuario) {
         super(parent, modal);
         initComponents();
+        this.usuario = usuario;
+        administrador.setSelected(usuario.isAdministrador());
+        nome.setText(usuario.getNomeUsuario());
     }
 
     /**
@@ -38,6 +44,7 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
         nome = new javax.swing.JTextField();
         salvar = new javax.swing.JButton();
         administrador = new javax.swing.JCheckBox();
+        excluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -54,6 +61,14 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
 
         administrador.setText("Administrador");
 
+        excluir.setForeground(new java.awt.Color(204, 0, 51));
+        excluir.setText("Excluir");
+        excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -62,15 +77,17 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(nome, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(administrador)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(103, 103, 103)
-                        .addComponent(salvar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(administrador)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(salvar, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                            .addComponent(excluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -84,7 +101,9 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
                 .addComponent(administrador)
                 .addGap(34, 34, 34)
                 .addComponent(salvar)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(excluir)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -110,7 +129,6 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
     private void salvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarActionPerformed
          try{
           GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-          Usuario usuario = new Usuario();
           usuario.setAdministrador(administrador.isSelected());
           usuario.setNomeUsuario(nome.getText());
           gerenciador.inserirUsuario(usuario);
@@ -121,9 +139,21 @@ public class TelaCadastroUsuario extends javax.swing.JDialog {
       }
     }//GEN-LAST:event_salvarActionPerformed
 
+    private void excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirActionPerformed
+        try{
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.excluirUsuario(usuario);
+            this.setVisible(false);
+            this.dispose();
+        }catch(ClassNotFoundException | NumberFormatException | SQLException e){
+            JOptionPane.showMessageDialog(this, e);
+        }
+    }//GEN-LAST:event_excluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox administrador;
+    private javax.swing.JButton excluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nome;

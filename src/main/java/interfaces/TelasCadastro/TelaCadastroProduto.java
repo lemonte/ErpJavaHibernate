@@ -15,14 +15,22 @@ import javax.swing.JOptionPane;
  */
 public class TelaCadastroProduto extends javax.swing.JDialog {
 
-          
+    private final Produto produto;
     /**
      * Creates new form TelaCadastroProduto
+     * @param parent
+     * @param modal
+     * @param produto
      */
-    public TelaCadastroProduto(java.awt.Frame parent, boolean modal) {
+    public TelaCadastroProduto(java.awt.Frame parent, boolean modal, Produto produto) {
         super(parent, modal);
-        
         initComponents();
+        this.produto = produto;
+        codigo.setText(produto.getCodigo());
+        nome.setText(produto.getNome());
+        double pre = produto.getPreco();
+        preco.setText(String.valueOf(pre));
+        quantidade.setValue(produto.getQuantidade());
     }
 
     /**
@@ -44,6 +52,7 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         preco = new javax.swing.JTextField();
         botaoSalvar = new javax.swing.JButton();
+        excluir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -61,6 +70,14 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
         botaoSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 botaoSalvarActionPerformed(evt);
+            }
+        });
+
+        excluir.setForeground(new java.awt.Color(204, 0, 51));
+        excluir.setText("Excluir");
+        excluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirActionPerformed(evt);
             }
         });
 
@@ -88,10 +105,12 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(108, 108, 108)
-                        .addComponent(botaoSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(botaoSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
+                            .addComponent(excluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,7 +134,9 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
                     .addComponent(quantidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(botaoSalvar)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(excluir)
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -143,7 +164,6 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
     private void botaoSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoSalvarActionPerformed
       try{
           GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-          Produto produto = new Produto();
           produto.setCodigo(codigo.getText());
           produto.setNome(nome.getText());
           produto.setPreco(Double.parseDouble(preco.getText()));
@@ -156,10 +176,22 @@ public class TelaCadastroProduto extends javax.swing.JDialog {
       }
     }//GEN-LAST:event_botaoSalvarActionPerformed
 
+    private void excluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirActionPerformed
+      try{
+          GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+          gerenciador.excluirProduto(produto);
+          this.setVisible(false);
+          this.dispose();
+      }catch(ClassNotFoundException | NumberFormatException | SQLException e){
+          JOptionPane.showMessageDialog(this, e);
+      }
+    }//GEN-LAST:event_excluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoSalvar;
     private javax.swing.JTextField codigo;
+    private javax.swing.JButton excluir;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

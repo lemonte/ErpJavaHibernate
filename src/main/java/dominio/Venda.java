@@ -5,6 +5,7 @@
 package dominio;
 
 import java.io.Serializable;
+import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,16 +42,29 @@ public class Venda implements Serializable {
     // preco que o produto foi vendido
     @Column(name = "preco", nullable = false)
     private double preco;
+    
+    @Column(name = "dataVenda", nullable = false)
+    private Date dataVenda;
+
 
     public Venda() {
+        idVenda = -1;
+        java.util.Date utilDate = new java.util.Date();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        dataVenda = sqlDate;
+        produto = new Produto();
+        usuario = new Usuario();
+        quantidade = 0;
+        preco = 0;
     }
 
-    public Venda(int idVenda, Produto produto, Usuario usuario, int quantidade, double preco) {
+    public Venda(int idVenda, Produto produto, Usuario usuario, int quantidade, double preco, Date dataVenda) {
         this.idVenda = idVenda;
         this.produto = produto;
         this.usuario = usuario;
         this.quantidade = quantidade;
         this.preco = preco;
+        this.dataVenda = dataVenda;
     }
 
     public int getIdVenda() {
@@ -69,6 +83,15 @@ public class Venda implements Serializable {
         this.produto = produto;
     }
 
+    public Date getDataVenda(){
+        return dataVenda;
+    }
+    
+    public void setDataVenda(Date dataVenda){
+        this.dataVenda = dataVenda;
+    }
+    
+    
     public Usuario getUsuario() {
         return usuario;
     }

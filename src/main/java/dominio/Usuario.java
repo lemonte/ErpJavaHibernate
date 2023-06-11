@@ -33,10 +33,11 @@ public class Usuario implements Serializable {
     @Column(name = "administrador", nullable = false)
     private boolean administrador;
 
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Venda> vendas = new ArrayList();
-
     public Usuario() {
+        idUsuario = -1;
+        nomeUsuario = "";
+        administrador = false;
+        
     }
 
     public Usuario(int idUsuario, String nomeUsuario, boolean administrador) {

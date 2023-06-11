@@ -16,13 +16,17 @@ import javax.swing.JOptionPane;
  * @author geandersonlemonte
  */
 public class TelaCadastroVenda extends javax.swing.JDialog {
-
+    private final Venda venda;
     /**
      * Creates new form TelaCadastroProduto
+     * @param parent
+     * @param modal
+     * @param venda
      */
-    public TelaCadastroVenda(java.awt.Frame parent, boolean modal) {
+    public TelaCadastroVenda(java.awt.Frame parent, boolean modal, Venda venda) {
         super(parent, modal);
         initComponents();
+        this.venda = venda;
         init();
     }
 
@@ -152,13 +156,12 @@ public class TelaCadastroVenda extends javax.swing.JDialog {
         int valor = Integer.parseInt(quantidade.getValue().toString());
         Produto prod = (Produto)produto.getSelectedItem();
         int maximo = prod.getQuantidade();
-        if(valor >= maximo || valor <= 0){
+        if(valor > maximo || valor <= 0){
             quantidade.setValue(maximo);
             JOptionPane.showMessageDialog(this, "Quantidade não permitida");
         }else{
             try {
                 GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-                Venda venda = new Venda();
                 venda.setQuantidade(Integer.parseInt(quantidade.getValue().toString()));
                 venda.setProduto(prod);
                 venda.setUsuario((Usuario) vendedor.getSelectedItem());

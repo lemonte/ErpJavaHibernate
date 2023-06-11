@@ -39,10 +39,13 @@ public class Produto implements Serializable {
     @Column(name = "preco", nullable = false)
     private double preco;
 
-    @OneToMany(mappedBy = "produto", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Venda> vendas = new ArrayList();
 
     public Produto() {
+        idProduto = -1;
+        nome = "";
+        codigo = "";
+        quantidade = 0;
+        preco = 0;
     }
 
     public Produto(int idProduto, String nome, String codigo, int quantidade, double preco) {
@@ -54,7 +57,7 @@ public class Produto implements Serializable {
     }
 
     public int getIdProduto() {
-        return idProduto;
+        return idProduto ;
     }
 
     public void setIdProduto(int idProduto) {

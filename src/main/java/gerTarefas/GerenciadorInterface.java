@@ -11,11 +11,14 @@ import interfaces.Dashboard;
 import interfaces.TelasCadastro.TelaCadastroProduto;
 import interfaces.TelasCadastro.TelaCadastroUsuario;
 import interfaces.TelasCadastro.TelaCadastroVenda;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
@@ -48,7 +51,7 @@ public class GerenciadorInterface {
         return instancia;
     }
 
-    private List<Usuario> listarUsuarios() {
+    public List<Usuario> listarUsuarios() {
         try {
             return gerenciadorDominio.listarUsuarios();
         } catch (Exception e) {
@@ -56,7 +59,7 @@ public class GerenciadorInterface {
         }
     }
 
-    private List<Venda> listarVendas() {
+    public List<Venda> listarVendas() {
         try {
             return gerenciadorDominio.listarVendas();
         } catch (Exception e) {
@@ -64,7 +67,7 @@ public class GerenciadorInterface {
         }
     }
 
-    private List<Produto> listarProdutos() {
+    public List<Produto> listarProdutos() {
         try {
             return gerenciadorDominio.listarProdutos();
         } catch (Exception e) {
@@ -74,7 +77,76 @@ public class GerenciadorInterface {
 
     public void inserirProduto(Produto produto) {
         try {
-            gerenciadorDominio.inserirProduto(produto);
+            if (produto.getIdProduto() != -1) {
+                gerenciadorDominio.alterarProduto(produto);
+            } else {
+                gerenciadorDominio.inserirProduto(produto);
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+
+    
+    public void listarVendedores(JComboBox combo){
+        List<Usuario> usuarios = listarUsuarios();
+        usuarios.add(0, new Usuario(-1, "Nenhum Selecionado", false));
+        combo.setModel(new DefaultComboBoxModel(usuarios.toArray()));
+    }
+    
+    public void buscarPorVendedor(int idVendedor, JTable tabela) {
+        if(idVendedor < 1){
+            carregarTabela(tabela, new Venda());
+            return;
+        }
+        List<String> colunas = new LinkedList();
+        Object[][] data = {};
+        var modelTabela = new DefaultTableModel(data, colunas.toArray());
+        try {
+            colunas.add("ID");
+            colunas.add("Produto");
+            colunas.add("Vendedor");
+            colunas.add("Data de Venda");
+            colunas.add("Quantidade");
+            colunas.add("Total Venda");
+            List<Venda> vendas = listarVendas();
+            vendas = vendas
+                    .stream()
+                    .filter(map -> map.getUsuario().getIdUsuario() == idVendedor)
+                    .collect(Collectors.toList());
+
+            modelTabela = new DefaultTableModel(data, colunas.toArray());
+            for (Venda venda : vendas) {
+                modelTabela.addRow(
+                        Arrays.asList(venda.getIdVenda(),
+                                venda.getProduto().getIdProduto(),
+                                venda.getUsuario().getNomeUsuario(),
+                                venda.getDataVenda(),
+                                venda.getQuantidade(),
+                                (venda.getProduto().getPreco() * venda.getQuantidade())).toArray());
+            }
+            tabela.setModel(modelTabela);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public void excluirProduto(Produto produto) {
+        try {
+            if (produto.getIdProduto() != -1) {
+                gerenciadorDominio.excluirProduto(produto);
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    public void excluirUsuario(Usuario usuario) {
+        try {
+            if (usuario.getIdUsuario() != -1) {
+                gerenciadorDominio.excluirUsuario(usuario);
+            }
         } catch (Exception e) {
 
         }
@@ -82,7 +154,11 @@ public class GerenciadorInterface {
 
     public void inserirUsuario(Usuario usuario) {
         try {
-            gerenciadorDominio.inserirUsuario(usuario);
+            if (usuario.getIdUsuario() != -1) {
+                gerenciadorDominio.alterarUsuario(usuario);
+            } else {
+                gerenciadorDominio.inserirUsuario(usuario);
+            }
         } catch (Exception e) {
 
         }
@@ -90,7 +166,14 @@ public class GerenciadorInterface {
 
     public void inserirVenda(Venda venda) {
         try {
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            venda.setDataVenda(sqlDate);
+            Produto produto = venda.getProduto();
+            produto.setQuantidade(produto.getQuantidade() - venda.getQuantidade());
             gerenciadorDominio.inserirVenda(venda);
+            gerenciadorDominio.alterarProduto(produto);
+
         } catch (Exception e) {
 
         }
@@ -99,7 +182,6 @@ public class GerenciadorInterface {
     public void janelaPrincipal() {
         dashboard = new Dashboard();
         dashboard.setVisible(true);
-
     }
 
     public void carregarTabela(JTable tabela, Object model) {
@@ -113,12 +195,19 @@ public class GerenciadorInterface {
                 colunas.add("ID");
                 colunas.add("Produto");
                 colunas.add("Vendedor");
+                colunas.add("Data de Venda");
                 colunas.add("Quantidade");
                 colunas.add("Total Venda");
                 List<Venda> vendas = listarVendas();
                 modelTabela = new DefaultTableModel(data, colunas.toArray());
                 for (Venda venda : vendas) {
-                    modelTabela.addRow(Arrays.asList(venda.getIdVenda(), venda.getProduto().getIdProduto(), venda.getUsuario().getNomeUsuario(), venda.getQuantidade(),( venda.getProduto().getPreco() * venda.getQuantidade())).toArray());
+                    modelTabela.addRow(
+                            Arrays.asList(venda.getIdVenda(),
+                                    venda.getProduto().getIdProduto(),
+                                    venda.getUsuario().getNomeUsuario(),
+                                    venda.getDataVenda(),
+                                    venda.getQuantidade(),
+                                    (venda.getProduto().getPreco() * venda.getQuantidade())).toArray());
                 }
             }
             if (Produto.class.equals(model.getClass())) {
@@ -167,18 +256,33 @@ public class GerenciadorInterface {
         }
     }
 
+    public void atualizarProduto(Produto produto) {
+        telaCadastroProduto = new TelaCadastroProduto(dashboard, true, produto);
+        telaCadastroProduto.setVisible(true);
+    }
+
+    public void atualizarVenda(Venda venda) {
+        telaCadastroVenda = new TelaCadastroVenda(dashboard, true, venda);
+        telaCadastroVenda.setVisible(true);
+    }
+
+    public void atualizarUsuario(Usuario usuario) {
+        telaCadastroUsuario = new TelaCadastroUsuario(dashboard, true, usuario);
+        telaCadastroUsuario.setVisible(true);
+    }
+
     public void cadastroProduto() {
-        telaCadastroProduto = new TelaCadastroProduto(dashboard, true);
+        telaCadastroProduto = new TelaCadastroProduto(dashboard, true, new Produto());
         telaCadastroProduto.setVisible(true);
     }
 
     public void cadastroVenda() {
-        telaCadastroVenda = new TelaCadastroVenda(dashboard, true);
+        telaCadastroVenda = new TelaCadastroVenda(dashboard, true, new Venda());
         telaCadastroVenda.setVisible(true);
     }
 
     public void cadastroUsuario() {
-        telaCadastroUsuario = new TelaCadastroUsuario(dashboard, true);
+        telaCadastroUsuario = new TelaCadastroUsuario(dashboard, true, new Usuario());
         telaCadastroUsuario.setVisible(true);
     }
 
