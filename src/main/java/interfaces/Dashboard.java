@@ -456,15 +456,15 @@ public class Dashboard extends javax.swing.JFrame {
     }
 
     private void atualizarTabelaVendas() {
-//        try {
-//            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-//            gerenciador.listarVendedores(selectVendedor);
-//            gerenciador.carregarTabela(tabelaVendas, new Venda());
-//        } catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+            gerenciador.listarVendedores(selectVendedor);
+            gerenciador.carregarTabela(tabelaVendas, new Venda());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 
@@ -505,15 +505,15 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaUsuariosMouseClicked
 
     private void tabelaVendasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaVendasMouseClicked
-        try {
-            int posicao = tabelaVendas.getSelectedRow();
-            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
-            Venda vendas = gerenciador.listarVendas().get(posicao);
-            gerenciador.atualizarVenda(vendas);
-            gerenciador.carregarTabela(tabelaVendas, new Venda());
-        } catch (Exception e) {
-
-        }
+//        try {
+//            int posicao = tabelaVendas.getSelectedRow();
+//            GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
+//            Venda vendas = gerenciador.listarVendas().get(posicao);
+//            gerenciador.atualizarVenda(vendas);
+//            gerenciador.carregarTabela(tabelaVendas, new Venda());
+//        } catch (Exception e) {
+//
+//        }
     }//GEN-LAST:event_tabelaVendasMouseClicked
 
     private void selectVendedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectVendedorActionPerformed
