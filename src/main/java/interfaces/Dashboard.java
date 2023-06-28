@@ -192,7 +192,15 @@ public class Dashboard extends javax.swing.JFrame {
             new String [] {
                 "ID", "Nome", "Administrador"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tabelaUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaUsuariosMouseClicked(evt);
@@ -265,7 +273,7 @@ public class Dashboard extends javax.swing.JFrame {
                 java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true, true, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -296,13 +304,6 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tabelaVendas);
-        if (tabelaVendas.getColumnModel().getColumnCount() > 0) {
-            tabelaVendas.getColumnModel().getColumn(0).setResizable(false);
-            tabelaVendas.getColumnModel().getColumn(1).setResizable(false);
-            tabelaVendas.getColumnModel().getColumn(2).setResizable(false);
-            tabelaVendas.getColumnModel().getColumn(3).setResizable(false);
-            tabelaVendas.getColumnModel().getColumn(4).setResizable(false);
-        }
 
         jLabel1.setText("Pesquisar Por Vendedor");
 

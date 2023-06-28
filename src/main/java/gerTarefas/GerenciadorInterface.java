@@ -88,15 +88,14 @@ public class GerenciadorInterface {
         }
     }
 
-    
-    public void listarVendedores(JComboBox combo){
+    public void listarVendedores(JComboBox combo) {
         List<Usuario> usuarios = listarUsuarios();
         usuarios.add(0, new Usuario(-1, "Nenhum Selecionado", false));
         combo.setModel(new DefaultComboBoxModel(usuarios.toArray()));
     }
-    
+
     public void buscarPorVendedor(int idVendedor, JTable tabela) {
-        if(idVendedor < 1){
+        if (idVendedor < 1) {
             carregarTabela(tabela, new Venda());
             return;
         }
@@ -116,7 +115,12 @@ public class GerenciadorInterface {
                     .filter(map -> map.getUsuario().getIdUsuario() == idVendedor)
                     .collect(Collectors.toList());
 
-            modelTabela = new DefaultTableModel(data, colunas.toArray());
+            modelTabela = new DefaultTableModel(data, colunas.toArray()) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
             for (Venda venda : vendas) {
                 modelTabela.addRow(
                         Arrays.asList(venda.getIdVenda(),
@@ -186,7 +190,6 @@ public class GerenciadorInterface {
 
     public void carregarTabela(JTable tabela, Object model) {
         List<String> colunas = new LinkedList();
-
         Object[][] data = {};
         var modelTabela = new DefaultTableModel(data, colunas.toArray());
 
@@ -199,7 +202,13 @@ public class GerenciadorInterface {
                 colunas.add("Quantidade");
                 colunas.add("Total Venda");
                 List<Venda> vendas = listarVendas();
-                modelTabela = new DefaultTableModel(data, colunas.toArray());
+                modelTabela = new DefaultTableModel(data, colunas.toArray()) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
+
                 for (Venda venda : vendas) {
                     modelTabela.addRow(
                             Arrays.asList(venda.getIdVenda(),
@@ -219,7 +228,12 @@ public class GerenciadorInterface {
                 List<Produto> produtos = listarProdutos();
                 System.out.println("Produtos");
                 System.out.println(produtos);
-                modelTabela = new DefaultTableModel(data, colunas.toArray());
+                modelTabela = new DefaultTableModel(data, colunas.toArray()) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
                 for (Produto produto : produtos) {
                     modelTabela.addRow(Arrays.asList(produto.getIdProduto(), produto.getCodigo(), produto.getNome(), produto.getQuantidade(), produto.getPreco()).toArray());
                 }
@@ -229,7 +243,12 @@ public class GerenciadorInterface {
                 colunas.add("Nome");
                 colunas.add("Administrador");
                 List<Usuario> usuarios = listarUsuarios();
-                modelTabela = new DefaultTableModel(data, colunas.toArray());
+                modelTabela = new DefaultTableModel(data, colunas.toArray()) {
+                    @Override
+                    public boolean isCellEditable(int row, int column) {
+                        return false;
+                    }
+                };
                 for (Usuario usuario : usuarios) {
                     modelTabela.addRow(Arrays.asList(usuario.getIdUsuario(), usuario.getNomeUsuario(), usuario.isAdministrador()).toArray());
                 }
@@ -242,14 +261,22 @@ public class GerenciadorInterface {
 
     public void carregarComboBox(JComboBox combo, Object model) {
         try {
-            if (Venda.class.equals(model.getClass())) {
-                combo.setModel(new DefaultComboBoxModel(listarVendas().toArray()));
+            if (Venda.class
+                    .equals(model.getClass())) {
+                combo.setModel(
+                        new DefaultComboBoxModel(listarVendas().toArray()));
             }
-            if (Produto.class.equals(model.getClass())) {
-                combo.setModel(new DefaultComboBoxModel(listarProdutos().toArray()));
+
+            if (Produto.class
+                    .equals(model.getClass())) {
+                combo.setModel(
+                        new DefaultComboBoxModel(listarProdutos().toArray()));
             }
-            if (Usuario.class.equals(model.getClass())) {
-                combo.setModel(new DefaultComboBoxModel(listarUsuarios().toArray()));
+
+            if (Usuario.class
+                    .equals(model.getClass())) {
+                combo.setModel(
+                        new DefaultComboBoxModel(listarUsuarios().toArray()));
             }
         } catch (Exception e) {
 
@@ -292,16 +319,24 @@ public class GerenciadorInterface {
                 if ("default".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Dashboard.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
         GerenciadorInterface gerenciador = GerenciadorInterface.getInstancia();
